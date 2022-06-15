@@ -1,6 +1,6 @@
 const express = require('express');
 //hooking up our v1 express router
-const v1Router = require('./v1/routes');
+const v1WorkourRouter = require('./v1/routes/workoutRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -11,7 +11,7 @@ app.get('/', (req, res) => {
     }
 );
 
-app.use('/api/v1', v1Router);
+app.use('/api/v1/workouts', v1WorkourRouter);
 
 //listening on port 3000
 app.listen(PORT, () => {
