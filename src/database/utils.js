@@ -6,4 +6,4 @@ const saveToDatabase = (DB) => {
   });
 };
 
-module.exports = saveToDatabase;
+module.exports = { saveToDatabase };
