@@ -4,7 +4,6 @@ const workoutController = require("../../controllers/workoutController");
 const recordController = require("../../controllers/recordController");
 const memberController = require("../../controllers/memberController");
 
-
 const router = express.Router();
 
 //defining the different endpoints
@@ -15,6 +14,12 @@ const router = express.Router();
  *   get:
  *     tags:
  *       - Workouts
+ *     parameters:
+ *       - in: query
+ *         name: mode
+ *         schema:
+ *           type: string
+ *         description: The mode of a workout
  *     responses:
  *       200:
  *         description: OK
@@ -27,9 +32,25 @@ const router = express.Router();
  *                   type: string
  *                   example: OK
  *                 data:
- *                   type: array 
- *                   items: 
- *                     type: object
+ *                   type: array
+ *                   items:
+ *                     $ref: "#/components/schemas/Workout"
+ *      500:
+ *         description: FAILED
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: FAILED
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     error:
+ *                       type: string
+ *                       example: "Some error message"
  */
 router.get("/", workoutController.getAllWorkouts);
 
