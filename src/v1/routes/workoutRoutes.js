@@ -32,24 +32,24 @@ const router = express.Router();
  *                   type: string
  *                   example: OK
  *                 data:
- *                   type: array
- *                   items:
+ *                   type: array 
+ *                   items: 
  *                     $ref: "#/components/schemas/Workout"
- *      500:
+ *       5XX:
  *         description: FAILED
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status:
+ *                 status: 
  *                   type: string
  *                   example: FAILED
  *                 data:
  *                   type: object
  *                   properties:
  *                     error:
- *                       type: string
+ *                       type: string 
  *                       example: "Some error message"
  */
 router.get("/", workoutController.getAllWorkouts);
