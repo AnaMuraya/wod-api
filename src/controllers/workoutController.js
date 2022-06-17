@@ -3,9 +3,11 @@ const workoutService = require("../services/workoutService");
 
 // get all workouts
 const getAllWorkouts = (req, res) => {
+  //destruct the mode from the url
+  const { mode } = req.query;
   //catch errors that might occur
   try {
-    const allWorkouts = workoutService.getAllWorkouts();
+    const allWorkouts = workoutService.getAllWorkouts({ mode });
     res.send({ status: "OK", data: allWorkouts });
   } catch (err) {
     res

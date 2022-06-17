@@ -1,11 +1,18 @@
 const DB = require("./db.json");
 const { saveToDatabase } = require("./utils");
 
-const getAllWorkouts = () => {
+const getAllWorkouts = (filterParams) => {
   try {
-    return DB.workouts;
+    let workouts = DB.workouts; //using 'let' cause we might overwrite it incase of othe filters
+    //if there are filter params, filter the workouts
+    if (filterParams) {
+      return workouts.filter((workout) =>
+        workout.mode.toLowerCase().includes(filterParams.mode)
+      );
+    }
+    return workouts;
   } catch (err) {
-    throw { status: 500, message: "Error getting all workouts" || err.message };
+    throw { status: 500, message: "Error getting the workouts" || err.message };
   }
 };
 
