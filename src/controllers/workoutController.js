@@ -9,8 +9,20 @@ const getAllWorkouts = (req, res) => {
 
 // get a single workout
 const getSingleWorkout = (req, res) => {
-  const workout = workoutService.getSingleWorkout();
-  res.send(`<h3>Hello from this workout!</h3>`);
+  // get the workout id from the url
+  const {
+    params: { workoutId },
+  } = req;
+
+  //if the workout id is not valid, return an error
+  if (!workoutId) {
+    return res
+      .status(400)
+      .send({ status: "ERROR", message: "Invalid workout id" });
+  }
+
+  const workout = workoutService.getSingleWorkout(workoutId);
+  res.send({ status: "OK", data: workout });
 };
 
 // create a new workout
@@ -31,8 +43,8 @@ const createNewWorkout = (req, res) => {
     mode: body.mode,
     equipment: body.equipment,
     exercises: body.exercises,
-    trainerTips: body.trainerTips
-  }
+    trainerTips: body.trainerTips,
+  };
 
   const createdWorkout = workoutService.createNewWorkout(newWorkout);
   res.status(201).send({ status: "OK", data: createdWorkout });
@@ -40,14 +52,37 @@ const createNewWorkout = (req, res) => {
 
 // update a workout
 const updateSingleWorkout = (req, res) => {
-  const updatedWorkout = workoutService.updateSingleWorkout();
-  res.send(`<h3>Updating existing workout!</h3>`);
+  // get the workout id from the url and the updated workout from the body
+  const {
+    params: { workoutId },
+    body,
+  } = req;
+  //if the workout id is not valid, return an error
+  if (!workoutId) {
+    return res
+      .status(400)
+      .send({ status: "ERROR", message: "Invalid workout id" });
+  }
+
+  const updatedWorkout = workoutService.updateSingleWorkout(workoutId, body);
+  res.send({ status: "OK", data: updatedWorkout });
 };
 
 // delete a workout
 const deleteSingleWorkout = (req, res) => {
-  const deletedWorkout = workoutService.deleteSingleWorkout();
-  res.send(`<h3>Deleting an existing workout!</h3>`);
+  // get the workout id from the url
+  const {
+    params: { workoutId },
+  } = req;
+  //if the workout id is not valid, return an error
+  if (!workoutId) {
+    return res
+      .status(400)
+      .send({ status: "ERROR", message: "Invalid workout id" });
+  }
+
+  workoutService.deleteSingleWorkout(workoutId);
+  res.send({ status: "OK" });
 };
 
 module.exports = {

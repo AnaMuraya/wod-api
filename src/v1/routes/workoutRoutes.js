@@ -1,23 +1,23 @@
-const express = require('express');
+const express = require("express");
 //importing our controller methods
-const workoutController = require('../../controllers/workoutController');
+const workoutController = require("../../controllers/workoutController");
 
 const router = express.Router();
 
 //defining the different endpoints
 //getting all workouts
-router.get('/', workoutController.getAllWorkouts);
+router.get("/", workoutController.getAllWorkouts);
 
 //getting a single workout
-router.get('/:id', workoutController.getSingleWorkout);
+router.get("/:workoutId", workoutController.getSingleWorkout);
 
 //creating a new workout
-router.post('/', workoutController.createNewWorkout);
+router.post("/", workoutController.createNewWorkout);
 
 //updating a workout
-router.put('/:id', workoutController.updateSingleWorkout);
+router.put("/:workoutId", workoutController.updateSingleWorkout);
 
 //deleting a workout
-router.delete('/:id', workoutController.deleteSingleWorkout);
+router.delete("/:workoutId", workoutController.deleteSingleWorkout);
 
 module.exports = router;
