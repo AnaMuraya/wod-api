@@ -3,8 +3,15 @@ const workoutService = require("../services/workoutService");
 
 // get all workouts
 const getAllWorkouts = (req, res) => {
-  const allWorkouts = workoutService.getAllWorkouts();
-  res.send({ status: "OK", data: allWorkouts });
+  //catch errors that might occur
+  try {
+    const allWorkouts = workoutService.getAllWorkouts();
+    res.send({ status: "OK", data: allWorkouts });
+  } catch (err) {
+    res
+      .status(err.status || 500)
+      .send({ status: "ERROR", message: err?.message });
+  }
 };
 
 // get a single workout
@@ -18,11 +25,17 @@ const getSingleWorkout = (req, res) => {
   if (!workoutId) {
     return res
       .status(400)
-      .send({ status: "ERROR", message: "Invalid workout id" });
+      .send({ status: "ERROR", message: "workoutId can't be empty" });
   }
 
-  const workout = workoutService.getSingleWorkout(workoutId);
-  res.send({ status: "OK", data: workout });
+  try {
+    const workout = workoutService.getSingleWorkout(workoutId);
+    res.send({ status: "OK", data: workout });
+  } catch (err) {
+    res
+      .status(err.status || 500)
+      .send({ status: "ERROR", message: err?.message });
+  }
 };
 
 // create a new workout
@@ -36,7 +49,12 @@ const createNewWorkout = (req, res) => {
     !body.exercises ||
     !body.trainerTips
   ) {
-    return;
+    //if the workout is not valid, return an error
+    return res.status(400).send({
+      status: "ERROR",
+      message:
+        "Invalid workout, one of the keys is empty or missing in the request body:  'name', 'mode', 'equipment', 'exercises', 'trainerTips'",
+    });
   }
   const newWorkout = {
     name: body.name,
@@ -46,8 +64,15 @@ const createNewWorkout = (req, res) => {
     trainerTips: body.trainerTips,
   };
 
-  const createdWorkout = workoutService.createNewWorkout(newWorkout);
-  res.status(201).send({ status: "OK", data: createdWorkout });
+  //catch the errors that might occur
+  try {
+    const createdWorkout = workoutService.createNewWorkout(newWorkout);
+    res.status(201).send({ status: "OK", data: createdWorkout });
+  } catch (err) {
+    res
+      .status(err?.status || 500)
+      .send({ status: "ERROR", message: err?.message });
+  }
 };
 
 // update a workout
@@ -61,11 +86,17 @@ const updateSingleWorkout = (req, res) => {
   if (!workoutId) {
     return res
       .status(400)
-      .send({ status: "ERROR", message: "Invalid workout id" });
+      .send({ status: "ERROR", message: "workoutIdcan't be empty" });
   }
 
-  const updatedWorkout = workoutService.updateSingleWorkout(workoutId, body);
-  res.send({ status: "OK", data: updatedWorkout });
+  try {
+    const updatedWorkout = workoutService.updateSingleWorkout(workoutId, body);
+    res.send({ status: "OK", data: updatedWorkout });
+  } catch (err) {
+    res
+      .status(err.status || 500)
+      .send({ status: "ERROR", message: err?.message });
+  }
 };
 
 // delete a workout
@@ -81,8 +112,14 @@ const deleteSingleWorkout = (req, res) => {
       .send({ status: "ERROR", message: "Invalid workout id" });
   }
 
-  workoutService.deleteSingleWorkout(workoutId);
-  res.send({ status: "OK" });
+  try {
+    workoutService.deleteSingleWorkout(workoutId);
+    res.send({ status: "OK" });
+  } catch (err) {
+    res
+      .status(err.status || 500)
+      .send({ status: "ERROR", message: err?.message });
+  }
 };
 
 module.exports = {
